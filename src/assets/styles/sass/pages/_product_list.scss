@@ -1,0 +1,15 @@
+.product-list {
+  .card {
+    .product-card-compare::before {
+      padding: 0 0.5rem 0 0;
+      font-family: $font-family-fa;
+      content: fa-content($fa-var-balance-scale);
+    }
+
+    .product-card-show::before {
+      padding: 0 0.5rem 0 0;
+      font-family: $font-family-fa;
+      content: fa-content($fa-var-file-alt);
+    }
+  }
+}

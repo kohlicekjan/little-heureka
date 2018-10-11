@@ -1,0 +1,6 @@
+/// Helper to add icon from Font Awesome
+/// @param {String} $fa-var - Font Awesome in unicode
+@mixin add-icon-from-fa($fa-var) {
+  font-family: $font-family-fa;
+  content: fa-content($fa-var);
+}

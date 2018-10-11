@@ -1,6 +1,24 @@
-@import "helpers/variables";
-@import "components/button";
-@import "layout/header";
-@import "layout/footer";
-@import "themes/default";
+//Helpers
+@import "utils/variables";
+@import "utils/mixins";
+//Vendors
 @import "vendors/bootstrap";
+//Base
+@import "base/typography";
+//Layout
+@import "layout/body";
+@import "layout/footer";
+@import "layout/sidebar";
+@import "layout/loading_screen";
+//Components
+@import "components/loading_ring";
+@import "components/logo";
+@import "components/card";
+@import "components/pagination";
+@import "components/gallery";
+//Pages
+@import "pages/category_list";
+@import "pages/product_list";
+@import "pages/product_detail";
+//Themes
+@import "themes/theme";

@@ -1,0 +1,60 @@
+<div class="product-list row p-2"
+     ng-show="SECTION.PRODUCT_LIST === selectedSection && ($root.loadingCount===0 || !$root.showLoadingContent)"
+     ng-controller="ProductListController">
+    <div class="col-12">
+        <breadcrumb data="breadcrumbs"></breadcrumb>
+    </div>
+    <div class="col-12 p-1"
+         id="product-card-{{$index}}"
+         ng-show="$root.products.length > 0"
+         ng-repeat="product in $root.products">
+        <div class="card">
+            <div class="row m-0">
+                <a class="card-img col-12 col-sm-5 col-md-3 col-lg-3 col-xl-2 card-img-wrapper"
+                   ng-href="{{ '#!?productId={productId}'.format(product) }}">
+                    <img class="card-img-top" ng-src="{{ product.img_url }}" alt="{{ product.title }}">
+                </a>
+                <div class="card-body col-12 col-sm-7 col-md-5 col-lg-5 col-xl-7">
+                    <h5 class="card-title">
+                        <a class="card-link text-dark"
+                           ng-href="{{ '#!?productId={productId}'.format(product) }}">
+                            {{ product.title }}</a>
+                    </h5>
+                    <p class="card-text">{{ product.description }}</p>
+                </div>
+                <div class="card-body m-auto col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 text-center">
+                    <div class="h4"
+                         ng-show="product.offers.length>0">
+                        <strong>{{ priceRangeFormat(product) }} Kč</strong>
+                    </div>
+                    <a id="product-card-compare-{{$index}}"
+                       class="product-card-compare btn btn-primary btn-lg btn-block"
+                       ng-show="product.offers.length>0"
+                       ng-href="{{ '#!?productId={productId}'.format(product) }}">
+                        {{ 'COMPARE_PRICE' | translate }}
+                    </a>
+                    <a id="product-card-show-{{$index}}"
+                       class="product-card-show btn btn-primary btn-lg btn-block"
+                       ng-show="!product.offers || product.offers.length==0"
+                       ng-href="{{ '#!?productId={productId}'.format(product) }}">
+                        {{ 'SHOW_PRODUCT' | translate }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 text-center"
+         ng-show="$root.products.length > 0">
+        <div class="loading-ring" ng-show="$root.loadingCount>0 && showLoadingShowMore"></div>
+
+        <pagination data="paginationData"
+                    callback="paginationCallback"
+                    link="'#!?categoryId={categoryId}&skip={1}'.format(selectedCategory, '{0}')"
+                    ng-show="$root.loadingCount==0 && !showLoadingShowMore">
+        </pagination>
+    </div>
+    <div id="no-products" class="col-12 text-center mt-5"
+         ng-show="!$root.products || $root.products.length==0">
+        {{ 'NO_PRODUCTS' | translate }}
+    </div>
+</div>

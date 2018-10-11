@@ -1,0 +1,48 @@
+<nav class="text-center mt-3 mb-3">
+    <button type="button" class="pagination-show-next btn btn-lg btn-primary mt-4 mb-4"
+            ng-show="currentSkip + pageLimit < totalRecords"
+            ng-click="selectShowMore(currentSkip + pageLimit)">
+        {{'SHOW_MORE' | translate: { count: showMoreCount() } }}
+    </button>
+    <ul class="pagination  justify-content-center">
+        <li class="page-item"
+            ng-show="currentSkip - pageLimit >= 0"
+            ng-click="selectPage(currentSkip - pageLimit)">
+            <a class="page-link page-item-prev" ng-href="{{ link.format(currentSkip - pageLimit) }}"></a>
+        </li>
+        <li class="page-item"
+            ng-class="{ 'active': 0 === currentSkip }"
+            ng-click="selectPage(0)">
+            <a class="page-link" ng-href="{{ link.format(0) }}">{{ 1 }}</a>
+        </li>
+        <li class="page-item disabled"
+            ng-show="startPage-1 >= 1">
+            <span class="page-link">...</span>
+        </li>
+        <li class="page-item"
+            ng-class="{ 'active': (n * pageLimit) === currentSkip }"
+            ng-repeat="n in pages">
+            <a class="page-link"
+               ng-href="{{ link.format(n * pageLimit) }}"
+               ng-click="selectPage(n * pageLimit)">
+                {{ n + 1 }}
+            </a>
+        </li>
+        <li class="page-item disabled"
+            ng-show="endPage + 1 < totalPages">
+            <span class="page-link">...</span>
+        </li>
+        <li class="page-item"
+            ng-show="totalPages > 1"
+            ng-class="{ 'active': currentSkip + pageLimit >= totalRecords }"
+            ng-click="selectPage(( totalPages - 1 ) * pageLimit)">
+            <a class="page-link" ng-href="{{ link.format(( totalPages - 1 ) * pageLimit) }}">{{ totalPages }}</a>
+        </li>
+        <li class="page-item"
+            ng-show=" currentSkip + pageLimit < totalRecords "
+            ng-click="selectPage(currentSkip + pageLimit)">
+            <a class="page-link page-item-next"
+               ng-href="{{ link.format(currentSkip + pageLimit) }}"></a>
+        </li>
+    </ul>
+</nav>

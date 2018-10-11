@@ -1,0 +1,37 @@
+.card {
+  .card-img-wrapper {
+    height: 15rem;
+  }
+
+  .card-img-top {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    object-fit: contain;
+  }
+
+  .card-img-top::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 15rem;
+    color: $color-heureka-orange;
+    font-size: 8rem;
+    line-height: 15rem;
+    text-align: center;
+    background-color: $background-color-basic;
+
+    @include add-icon-from-fa($fa-var-file-image);
+  }
+
+  .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,0 +1,15 @@
+.logo {
+  display: inline-block;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 1.25rem;
+  line-height: inherit;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    color: rgba(0, 0, 0, 0.9);
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,15 @@
+<nav ng-show="$ctrl.data.length>0">
+    <ol class="breadcrumb mb-0 pl-0 pr-0">
+        <li class="breadcrumb-item"
+            ng-repeat="breadcrumb in $ctrl.data"
+            ng-class="{ 'active': $last }">
+            <a ng-show="!$last"
+               ng-href="{{ breadcrumb.link }}">
+                {{ breadcrumb.title }}
+            </a>
+            <span ng-show="$last">
+                 {{ breadcrumb.title }}
+             </span>
+        </li>
+    </ol>
+</nav>

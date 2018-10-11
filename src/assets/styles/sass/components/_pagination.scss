@@ -1,0 +1,15 @@
+.pagination {
+  .page-item-prev::after {
+    @include add-icon-from-fa($fa-var-angle-left);
+  }
+
+  .page-item-next::after {
+    @include add-icon-from-fa($fa-var-angle-right);
+  }
+}
+
+.pagination-show-next::after {
+  padding: 0 0 0 0.5rem;
+
+  @include add-icon-from-fa($fa-var-chevron-down);
+}

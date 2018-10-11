@@ -1,0 +1,64 @@
+<div class="product-detail row p-2"
+     ng-show="SECTION.PRODUCT_DETAIL === selectedSection && ($root.loadingCount===0 || !$root.showLoadingContent)"
+     ng-controller="ProductDetailController">
+    <div class="col-12">
+        <breadcrumb data="breadcrumbs"></breadcrumb>
+    </div>
+    <div class="col-12"
+         ng-show="selectedProduct">
+        <div class="row ml-0 mr-0 ml-md-5 mr-md-5">
+            <div class="col-12 d-block d-sm-none">
+                <h1>{{ selectedProduct.title }}</h1>
+            </div>
+            <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-4">
+                <gallery data="selectedProduct.images" caption="selectedProduct.title"></gallery>
+            </div>
+            <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-8">
+                <h1 class="d-none d-sm-block">{{ selectedProduct.title }}</h1>
+                <p>{{ selectedProduct.description }}</p>
+            </div>
+        </div>
+        <div class="row mt-5 ml-0 mr-0 ml-md-5 mr-md-5">
+            <div class="col-12">
+                <h3>{{ 'PRICE_COMPARISON' | translate }}</h3>
+            </div>
+            <div class="col-12">
+                <div class="offer-item row"
+                     id="product-offer-item-{{$index}}"
+                     ng-repeat="offer in selectedProduct.offers | limitTo: pageLimitOffers">
+                    <div class="col col-8 order-1 col-sm-6 order-sm-1 col-md-7 col-lg-7 col-xl-8">
+                        <span>{{ offer.title }}</span>
+                    </div>
+                    <div class="col col-12 order-3 col-sm-3 order-sm-2 col-md-3 col-lg-3 col-xl-2">
+                        <a ng-href="{{ offer.url }}" target="_blank" rel="noopener"
+                           id="shop-link-{{$index}}"
+                           class="shop-link btn btn-lg btn-block">
+                            {{ 'BUY' | translate }}
+                        </a>
+                    </div>
+                    <div class="offer-item-price col col-4 order-2 col-sm-3 order-sm-3 col-md-2 col-lg-2 col-xl-2">
+                        <strong> {{ Tools.numberWithSpaces(offer.price) }} Kč </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center"
+                 ng-show="pageLimitOffers < selectedProduct.offers.length">
+                <nav>
+                    <button type="button" class="pagination-show-next btn btn-lg btn-primary mt-4 mb-4"
+                            ng-click="pageLimitOffers = selectedProduct.offers.length">
+                        {{ 'SHOW_MORE' | translate: { count: selectedProduct.offers.length - pageLimitOffers } }}
+                    </button>
+                </nav>
+            </div>
+            <div id="no-offers" class="col-12 text-center mt-5"
+                 ng-show="!selectedProduct.offers || selectedProduct.offers.length==0">
+                {{ 'NO_OFFERS' | translate }}
+            </div>
+        </div>
+    </div>
+    <div id="no-product"
+         class="col-12 text-center mt-5"
+         ng-show="!selectedProduct">
+        {{ 'NO_PRODUCT' | translate }}
+    </div>
+</div>

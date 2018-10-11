@@ -1,0 +1,52 @@
+.product-detail {
+  .offer-item {
+    box-sizing: content-box;
+    min-height: 4rem;
+    border-top: 1px solid $border-color-light;
+
+    .col {
+      margin: auto 0;
+
+      .shop-link {
+        height: 4rem;
+        padding: 0;
+        color: $background-color-basic;
+        line-height: 4rem;
+        background-color: $color-heureka-orange;
+        border-radius: 0;
+
+        &:hover {
+          text-decoration: none;
+          background-color: $color-heureka-blue;
+        }
+
+        &::before {
+          @include add-icon-from-fa($fa-var-shopping-cart);
+
+          padding: 0 0.5rem 0 0;
+        }
+      }
+    }
+
+    .offer-item-price {
+      text-align: center;
+    }
+  }
+
+  @include media-breakpoint-down(xs) {
+    .offer-item {
+      padding: 1rem 0 1rem 0;
+
+      .col {
+        min-height: 3rem;
+        font-size: 1.25rem;
+      }
+
+      .offer-item-price {
+        text-align: right;
+      }
+    }
+  }
+}
+
+

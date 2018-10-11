@@ -1,0 +1,28 @@
+/* Global */
+$color-heureka-orange: #ff7a04;
+$color-heureka-blue: #30a9d4;
+$background-color-basic: #fff;
+$background-color-grey: #f5f5f5;
+$font-color-light: #fff;
+$font-color-dark: #212529;
+$border-color-light: #dee2e6;
+
+/* loading-ring */
+$loading-ring-color-primary: $color-heureka-blue;
+$loading-ring-color-accent: $color-heureka-orange;
+$loading-ring-size: 4rem;
+$loading-ring-vertical: 3rem;
+
+/* loading-screen */
+$loading-screen-ring-size: 16rem;
+$loading-screen-background-color: whitesmoke;
+
+/* Boostrap variables */
+$badge-pill-border-radius: 0.25rem;
+$primary: #ff7a04;
+$enable-shadows: false;
+$btn-focus-width: 0;
+$pagination-focus-outline: 0;
+$pagination-focus-box-shadow: 0;
+$link-color: $color-heureka-orange;
+$link-hover-color: $color-heureka-blue;

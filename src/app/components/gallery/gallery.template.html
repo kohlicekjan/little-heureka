@@ -1,0 +1,75 @@
+<div class="gallery-carousel row">
+    <div class="col col-12">
+        <img class="gallery-img c-pointer"
+             ng-src="{{ $ctrl.data[0].url }}"
+             ng-show="$ctrl.data.length > 0"
+             ng-click="openGallery(0)"
+             alt="{{ $ctrl.caption }}">
+        <div class="gallery-img"
+             ng-show="$ctrl.data.length == 0">
+        </div>
+    </div>
+</div>
+<div class="gallery-thumbs row mb-4"
+     ng-show="$ctrl.data.length > 1">
+    <div class="col col-4 c-pointer"
+         ng-repeat="index in thumbsRange"
+         ng-show="$ctrl.data.length > index">
+        <img class="gallery-img"
+             ng-src="{{ $ctrl.data[index].url }}"
+             ng-show="$ctrl.data[index] && !($last && $ctrl.data.length > limit + 1)"
+             ng-click="openGallery(index)"
+             alt="{{ $ctrl.caption }}">
+        <div class="gallery-thumbs-more"
+             ng-show="$last && $ctrl.data.length > limit + 1"
+             ng-click="openGallery(index)">
+            {{ 'SHOW_MORE' | translate: { count: $ctrl.data.length - ( limit + 1 ) } }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-product-gallery" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ $ctrl.caption }}</h5>
+                    <div class="close c-pointer" data-dismiss="modal"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row h-100">
+                            <div class="col-12 col-sm-10 h-100">
+                                <img class="gallery-img-current" ng-src="{{ $ctrl.data[currentIndex].url }}"
+                                     alt="{{ $ctrl.caption }}">
+
+                                <div class="gallery-control-prev c-pointer"
+                                     ng-show="$ctrl.data.length > 1"
+                                     ng-click="changeImage(currentIndex - 1)">
+                                    <div class="gallery-control-prev-icon"></div>
+                                </div>
+
+                                <div class="gallery-control-next c-pointer"
+                                     ng-show="$ctrl.data.length > 1"
+                                     ng-click="changeImage(currentIndex + 1)">
+                                    <div class="gallery-control-next-icon"></div>
+                                </div>
+                            </div>
+                            <div class="gallery-panel col-2 h-100 d-none d-sm-block">
+                                <div class="row">
+                                    <div class="col-12 c-pointer gallery-panel-item"
+                                         ng-repeat="image in $ctrl.data">
+                                        <img class="gallery-img"
+                                             ng-src="{{ image.url }}"
+                                             ng-class="{ 'active': $index === currentIndex }"
+                                             ng-click="changeImage($index)"
+                                             alt="{{ $ctrl.caption }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

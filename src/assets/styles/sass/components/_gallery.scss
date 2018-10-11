@@ -1,0 +1,183 @@
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  padding: 1rem 0;
+  object-fit: contain;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    color: $color-heureka-orange;
+    text-align: center;
+    background-color: $background-color-basic;
+
+    @include add-icon-from-fa($fa-var-file-image);
+  }
+}
+
+.gallery-carousel {
+  min-height: 15rem;
+  max-height: 18rem;
+
+  .gallery-img::after {
+    height: 15rem;
+    font-size: 8rem;
+    line-height: 15rem;
+  }
+}
+
+.gallery-thumbs {
+  height: 7rem;
+  border-top: 1px solid $border-color-light;
+
+  .gallery-img::after {
+    height: 7rem;
+    font-size: 4rem;
+    line-height: 7rem;
+  }
+
+  .col {
+    border-right: 1px solid $border-color-light;
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  .gallery-thumbs-more {
+    color: $color-heureka-blue;
+    font-size: 0.8rem;
+    text-align: center;
+
+    &:hover {
+      color: $color-heureka-orange;
+    }
+
+    &::before {
+      display: block;
+      width: 100%;
+      font-size: 2.5rem;
+      text-align: center;
+
+      @include add-icon-from-fa($fa-var-angle-right);
+    }
+  }
+}
+
+#galleryModal {
+  .modal-dialog {
+    max-width: none;
+    height: 100%;
+    margin: auto 1rem;
+  }
+  .modal-content {
+    height: 80%;
+  }
+
+  .modal-body {
+    margin: 1rem;
+    padding: 0;
+  }
+
+  .modal-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .close::after {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+
+    @include add-icon-from-fa($fa-var-times);
+  }
+
+  .container-fluid {
+    position: absolute;
+    height: 100%;
+  }
+
+  .gallery-control-prev {
+    left: 0;
+  }
+
+  .gallery-control-next {
+    right: 0;
+  }
+
+  .gallery-control-prev,
+  .gallery-control-next {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    color: $color-heureka-blue;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .gallery-control-prev-icon {
+    position: relative;
+    top: 50%;
+    text-align: left;
+    transform: translateY(-50%);
+
+    &::after {
+      width: 100%;
+      padding: 0 0 0 1rem;
+      font-size: 5rem;
+
+      @include add-icon-from-fa($fa-var-angle-left);
+    }
+  }
+
+  .gallery-control-next-icon {
+    position: relative;
+    top: 50%;
+    text-align: right;
+    transform: translateY(-50%);
+
+    &::after {
+      width: 100%;
+      padding: 0 1rem 0 0;
+      font-size: 5rem;
+
+      @include add-icon-from-fa($fa-var-angle-right);
+    }
+  }
+
+  .gallery-img-current {
+    top: 50%;
+    right: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+  }
+
+  .gallery-panel {
+    overflow-y: scroll;
+
+    .gallery-panel-item {
+      margin: 0 0 0.5rem 0;
+
+      .gallery-img {
+        height: 7rem;
+        padding: 1rem;
+        border: 1px solid $border-color-light;
+        border-radius: 0.25rem;
+      }
+
+      .active {
+        border: 1px solid $color-heureka-blue;
+      }
+    }
+  }
+}

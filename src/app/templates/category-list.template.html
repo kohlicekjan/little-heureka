@@ -1,0 +1,25 @@
+<div class="category-list row p-2"
+     ng-show="SECTION.CATEGORY_LIST === selectedSection && ($root.loadingCount===0 || !$root.showLoadingContent)"
+     ng-controller="CategoryListController">
+    <div class="col-12">
+        <breadcrumb data="breadcrumbs"></breadcrumb>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 p-1"
+         ng-repeat="category in $root.categories | orderBy: '-count'">
+        <a id="category-card-{{$index}}"
+           class="card card-link text-dark"
+           ng-href="{{ '#!?categoryId={categoryId}'.format(category) }}">
+            <div class="card-img-wrapper">
+                <img class="card-img-top" ng-src="{{ category.img_url }}" alt="{{ category.title }}">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ category.title }}</h5>
+            </div>
+        </a>
+    </div>
+    <div class="col-12 text-center mt-5"
+         ng-show="!$root.categories || $root.categories.length === 0">
+        {{ 'NO_CATEGORIES' | translate }}
+    </div>
+</div>

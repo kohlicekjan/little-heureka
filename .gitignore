@@ -142,3 +142,9 @@ dist/
 
 # Idea config project
 .idea/
+
+# Lighthouse log
+latest-run/
+
+# Flow-typed
+flow-typed/

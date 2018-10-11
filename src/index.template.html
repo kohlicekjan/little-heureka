@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="little-heureka" lang="{{$root.lang}}">
+<head>
+    <meta charset="UTF-8">
+    <title>Malá Heureka</title>
+    <meta name="description" content="Malá Heureka - Popis">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body ng-controller="MainController" class="container-fluid">
+
+<div class="loading-screen" ng-show="showLoadingScreen && $root.loadingCount>0">
+    <a href="#" class="logo">
+        <img src="<%= require('./assets/images/logo.png') %>" width="30" height="30" alt="">
+        Malá Heureka
+    </a>
+    <div class="loading-visual loading-ring"></div>
+    <noscript class="no-script">
+        <p class="message">
+            Malá Heureka vyžaduje Javascript. Aktivujte Javascript a znovu načtěte tuto stránku.
+        </p>
+    </noscript>
+</div>
+
+<div class="wrapper row" ng-cloak ng-init="load()" ng-show="!showLoadingScreen">
+    <div id="sidebar" class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-2 text-center">
+        <header class="w-100">
+            <a href="#" class="logo">
+                <img src="<%= require('./assets/images/logo.png') %>" width="30" height="30"
+                     class="d-inline-block align-top" alt="">
+                {{ 'LITTLE_HEUREKA' | translate }}
+            </a>
+        </header>
+        <nav class="mt-5 mb-5 d-none d-lg-block">
+            <h5 class="h4 mb-3">{{ 'CATEGORIES' | translate }}</h5>
+            <div class="list-group"
+                 ng-show="$root.categories.length > 0">
+                <a id="category-item-{{$index}}"
+                   class="list-group-item d-flex justify-content-between align-items-center nav-link "
+                   ng-repeat="category in $root.categories | orderBy: '-count'"
+                   ng-href="{{ '#!?categoryId={categoryId}'.format(category) }}"
+                   ng-class="{ 'active' : category.categoryId === selectedCategory() }">
+                    {{ category.title }}
+                    <span class="badge badge-primary badge-pill">{{ category.count }}</span>
+                </a>
+            </div>
+            <p ng-show="!$root.categories || $root.categories.length === 0">
+                {{ 'NO_CATEGORIES' | translate }}
+            </p>
+        </nav>
+        <footer class="text-muted mb-3 mt-3 w-100 small d-none d-lg-block">
+            © 2018 Jan Kohlíček • version: {{ config.APP_VERSION }}
+        </footer>
+    </div>
+    <div class="content col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10 mb-5">
+        <div class="alert alert-warning mt-2 mb-2" role="alert" ng-show="!isOnLine">
+            {{ 'NO_INTERNET' | translate }}
+        </div>
+
+        <div class="loading-ring" ng-show="$root.loadingCount>0"></div>
+
+        <%= require('html-loader!./app/templates/category-list.template.html') %>
+        <%= require('html-loader!./app/templates/product-list.template.html') %>
+        <%= require('html-loader!./app/templates/product-detail.template.html') %>
+
+    </div>
+</div>
+<footer class="d-lg-none text-center text-muted mb-3 mt-3 small">
+    © 2018 Jan Kohlíček • version: {{ config.APP_VERSION }}
+</footer>
+
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ modalError.title }}</h5>
+            </div>
+            <div class="modal-body">
+                <p>{{ modalError.body }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="{{ modalError.clickButton ? '' : 'modal' }}"
+                        ng-click="modalError.clickButton && modalError.clickButton()">{{ modalError.button }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

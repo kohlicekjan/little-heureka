@@ -1,0 +1,20 @@
+.loading-ring {
+  width: $loading-ring-size;
+  height: $loading-ring-size;
+  margin: $loading-ring-vertical auto;
+  border: 0.1rem solid $loading-ring-color-primary;
+  border-bottom: 0.2rem solid $loading-ring-color-accent;
+  border-radius: 50%;
+  box-shadow: 0 0.6rem 0.6rem -0.6rem $loading-ring-color-accent;
+  animation: loading-ring--rotate 2s linear infinite;
+}
+
+@keyframes loading-ring--rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
