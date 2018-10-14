@@ -28,6 +28,11 @@
     font-size: 8rem;
     line-height: 15rem;
   }
+
+  .col {
+    min-height: 15rem;
+    max-height: 18rem;
+  }
 }
 
 .gallery-thumbs {
@@ -41,6 +46,7 @@
   }
 
   .col {
+    height: 7rem;
     border-right: 1px solid $border-color-light;
 
     &:last-child {

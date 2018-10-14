@@ -17,13 +17,13 @@
          ng-show="$ctrl.data.length > index">
         <img class="gallery-img"
              ng-src="{{ $ctrl.data[index].url }}"
-             ng-show="$ctrl.data[index] && !($last && $ctrl.data.length > limit + 1)"
+             ng-show="$ctrl.data[index] && !($last && $ctrl.data.length > thumbsLimit + 1)"
              ng-click="openGallery(index)"
              alt="{{ $ctrl.caption }}">
         <div class="gallery-thumbs-more"
-             ng-show="$last && $ctrl.data.length > limit + 1"
+             ng-show="$last && $ctrl.data.length > thumbsLimit + 1"
              ng-click="openGallery(index)">
-            {{ 'SHOW_MORE' | translate: { count: $ctrl.data.length - ( limit + 1 ) } }}
+            {{ 'SHOW_MORE' | translate: { count: $ctrl.data.length - thumbsLimit } }}
         </div>
     </div>
 </div>

@@ -20,6 +20,7 @@ var galleryComponent = function (app) {
       this.$onChanges = function (changes) {
         if (changes.data && this.data) {
           $scope.data = this.data
+          $('#galleryModal').modal('hide')
         }
       }
 
