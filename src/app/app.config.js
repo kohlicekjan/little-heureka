@@ -3,13 +3,16 @@
 var localeEN = require('../assets/locales/locale-en')
 var localeCZ = require('../assets/locales/locale-cz')
 
+// path: ./config/default.json
+var globalConfig = __CONFIG__
+
 var appConfig = function (app) {
   app.constant('config', {
-    APP_VERSION: VERSION,
-    API_URL: 'https://private-anon-917737df85-catalogue9.apiary-proxy.com/',
-    PAGE_LIMIT_OFFERS: 3,
-    PAGE_LIMIT_PRODUCTS: 5,
-    LOAD_BUFFER_CATEGORY_IMAGE: 2
+    APP_VERSION: __VERSION__,
+    API_URL: globalConfig.API_URL,
+    PAGE_LIMIT_OFFERS: parseInt(globalConfig.PAGE_LIMIT_OFFERS),
+    PAGE_LIMIT_PRODUCTS: parseInt(globalConfig.PAGE_LIMIT_PRODUCTS),
+    LOAD_BUFFER_CATEGORY_IMAGE: parseInt(globalConfig.LOAD_BUFFER_CATEGORY_IMAGE)
   })
 
   app.config(['$resourceProvider', function ($resourceProvider) {

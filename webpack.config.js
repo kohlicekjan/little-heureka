@@ -2,6 +2,7 @@ const pkg = require('./package.json')
 
 const path = require('path')
 const glob = require('glob')
+const config = require('config')
 const webpack = require('webpack')
 
 const CleanWebpackPlugin = require('clean-webpack-plugin')
@@ -160,7 +161,8 @@ const webpackConfig = {
       'window.jQuery': 'jquery'
     }),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(pkg.version)
+      __VERSION__: JSON.stringify(pkg.version),
+      __CONFIG__: JSON.stringify(config)
     })
   ],
   devServer: {
