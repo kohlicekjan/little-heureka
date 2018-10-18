@@ -24,7 +24,7 @@ const webpackConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app/[name].[hash].js',
-    publicPath: '/',
+    publicPath: './',
     sourceMapFilename: '[file].map'
   },
   devtool: isDev ? 'inline-source-map' : false,
@@ -134,15 +134,7 @@ const webpackConfig = {
           handler: 'staleWhileRevalidate'
         },
         {
-          urlPattern: /^http:\/\/python-servers-vtnovk529892\.codeanyapp\.com:5000\/.*$/,
-          handler: 'staleWhileRevalidate'
-        },
-        {
-          urlPattern: /^https:\/\/private-anon-917737df85-catalogue9\.apiary-proxy\.com\/.*$/,
-          handler: 'staleWhileRevalidate'
-        },
-        {
-          urlPattern: /^http:\/\/localhost:3003\/.*$/,
+          urlPattern: new RegExp('^' + config.API_URL + '.*$', 'i'),
           handler: 'staleWhileRevalidate'
         }
       ]
