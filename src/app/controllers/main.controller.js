@@ -4,7 +4,7 @@ var mainController = function (app) {
   app.controller('MainController', ['$rootScope', '$scope', '$location', '$window', '$translate', 'config', 'Categories', 'Products', function ($rootScope, $scope, $location, $window, $translate, config, Categories, Products) {
     $window.onload = function () {
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
       }
 
       if ('onLine' in navigator) {

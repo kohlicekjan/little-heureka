@@ -139,6 +139,7 @@ typings/
 
 # Build app
 dist/
+bin/
 
 # Idea config project
 .idea/

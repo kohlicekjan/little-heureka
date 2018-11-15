@@ -1,7 +1,6 @@
 const pkg = require('./package.json')
 
 const path = require('path')
-const glob = require('glob')
 const config = require('config')
 const webpack = require('webpack')
 
@@ -11,19 +10,20 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
-const WorkboxPlugin = require('workbox-webpack-plugin')
+const GenerateSW = require('workbox-webpack-plugin').GenerateSW
 const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
-const PurifyCSSPlugin = require('purifycss-webpack')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const isDev = process.argv.indexOf('development') > 0
+const distPath = path.resolve(__dirname, 'dist')
 
 const webpackConfig = {
   entry: {
-    app: path.resolve(__dirname, 'src/app/app.js')
+    app: path.resolve(__dirname, 'src', 'app', 'app.js')
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'app/[name].[hash].js',
+    path: distPath,
+    filename: path.join('app', '[name].[hash].js'),
     publicPath: './',
     sourceMapFilename: '[file].map'
   },
@@ -45,7 +45,7 @@ const webpackConfig = {
             options: { sourceMap: true }
           }
         ],
-        include: [path.resolve(__dirname, 'src/assets/styles')]
+        include: [path.resolve(__dirname, 'src', 'assets', 'styles')]
       },
       {
         test: /\.css$/,
@@ -58,14 +58,14 @@ const webpackConfig = {
             options: { sourceMap: true, minimize: true }
           }
         ],
-        include: [path.resolve(__dirname, 'src/assets/styles')]
+        include: path.resolve(__dirname, 'src', 'assets', 'styles')
       },
       {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
             loader: 'file-loader',
-            options: { name: 'assets/img/[name].[hash].[ext]' }
+            options: { name: path.join('assets', 'img', '[name].[ext]') }
           }
         ]
       },
@@ -73,19 +73,18 @@ const webpackConfig = {
         test: /\.(woff(2)?|ttf|eot|svg)$/,
         use: [{
           loader: 'file-loader',
-          options: { name: 'assets/fonts/[name].[ext]' }
+          options: { name: path.join('assets', 'fonts', '[name].[ext]') }
         }]
       }
     ]
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(distPath),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.template.html',
+      template: path.resolve(__dirname, 'src', 'index.template.html'),
       inject: 'head',
-      favicon: path.resolve(__dirname, 'src/assets/favicons/favicon.ico'),
+      favicon: path.resolve(__dirname, 'src', 'assets', 'favicons', 'favicon.ico'),
       minify: {
         minifyCSS: true,
         minifyJS: true,
@@ -94,7 +93,11 @@ const webpackConfig = {
         preserveLineBreaks: false,
         removeAttributeQuotes: true,
         removeComments: true
-      }
+      },
+      googleAnalytics: !isDev ? {
+        trackingId: config.GOOGLE_ANALYTICS_UA,
+        pageViewOnLoad: true
+      } : null
     }),
     new WebpackPwaManifest({
       name: 'Malá Heureka',
@@ -104,22 +107,22 @@ const webpackConfig = {
       theme_color: '#ffffff',
       icons: [
         {
-          src: path.resolve(__dirname, 'src/assets/favicons/favicon.png'),
+          src: path.resolve(__dirname, 'src', 'assets', 'favicons', 'favicon.png'),
           sizes: [24, 32, 48, 72, 96, 144, 192, 512],
           destination: path.join('assets', 'favicons')
         }
       ],
       ios: false,
       inject: true,
-      fingerprints: !isDev
+      fingerprints: false
     }),
     new CspHtmlWebpackPlugin(!isDev ? {
-      'base-uri': ["'unsafe-inline'", "'self'"],
-      'font-src': ["'unsafe-inline'", "'self'"],
-      'script-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"],
-      'style-src': ["'unsafe-inline'", "'self'"]
-    } : {}),
-    new WorkboxPlugin.GenerateSW({
+      'base-uri': ['\'unsafe-inline\'', '\'self\''],
+      'font-src': ['\'unsafe-inline\'', '\'self\''],
+      'script-src': ['\'unsafe-inline\'', '\'self\'', '\'unsafe-eval\''],
+      'style-src': ['\'unsafe-inline\'', '\'self\'']
+    } : null),
+    new GenerateSW({
       swDest: 'sw.js',
       importWorkboxFrom: 'local',
       clientsClaim: true,
@@ -140,10 +143,7 @@ const webpackConfig = {
       ]
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/css/[name].[contenthash].css'
-    }),
-    new PurifyCSSPlugin({
-      paths: glob.sync(path.join(__dirname, 'src/**/*'))
+      filename: path.join('assets', 'css', '[name].[contenthash].css')
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -156,9 +156,11 @@ const webpackConfig = {
       __VERSION__: JSON.stringify(pkg.version),
       __CONFIG__: JSON.stringify(config)
     })
+    // new BundleAnalyzerPlugin()
   ],
   devServer: {
-    contentBase: './dist',
+    contentBase: distPath,
+    publicPath: '/',
     open: true,
     historyApiFallback: true,
     noInfo: true,
@@ -169,7 +171,7 @@ const webpackConfig = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
-    } : {}
+    } : null
   },
   optimization: {
     minimize: !isDev,
@@ -187,7 +189,7 @@ const webpackConfig = {
     splitChunks: {
       cacheGroups: {
         commons: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /node_modules/,
           name: 'vendor',
           chunks: 'all'
         }
