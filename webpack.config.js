@@ -119,7 +119,7 @@ const webpackConfig = {
     new CspHtmlWebpackPlugin(!isDev ? {
       'base-uri': ['\'unsafe-inline\'', '\'self\''],
       'font-src': ['\'unsafe-inline\'', '\'self\''],
-      'script-src': ['\'unsafe-inline\'', '\'self\'', '\'unsafe-eval\''],
+      'script-src': ['\'unsafe-inline\'', '\'self\'', '\'unsafe-eval\'', 'www.google-analytics.com'],
       'style-src': ['\'unsafe-inline\'', '\'self\'']
     } : null),
     new GenerateSW({
