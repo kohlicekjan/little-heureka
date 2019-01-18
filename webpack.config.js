@@ -31,14 +31,14 @@ const webpackConfig = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader
           },
           {
             loader: 'css-loader',
-            options: { sourceMap: true, minimize: true }
+            options: { sourceMap: true }
           },
           {
             loader: 'sass-loader',
@@ -46,19 +46,6 @@ const webpackConfig = {
           }
         ],
         include: [path.resolve(__dirname, 'src', 'assets', 'styles')]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          {
-            loader: 'css-loader',
-            options: { sourceMap: true, minimize: true }
-          }
-        ],
-        include: path.resolve(__dirname, 'src', 'assets', 'styles')
       },
       {
         test: /\.(png|jpg|gif)$/i,
@@ -177,6 +164,8 @@ const webpackConfig = {
     minimize: !isDev,
     minimizer: [
       new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
         uglifyOptions: {
           output: {
             comments: false,
