@@ -60,7 +60,12 @@ const webpackConfig = {
         test: /\.(woff(2)?|ttf|eot|svg)$/,
         use: [{
           loader: 'file-loader',
-          options: { name: path.join('assets', 'fonts', '[name].[ext]') }
+          options: {
+            publicPath: (url, resourcePath, context) => {
+              return '/' + url
+            },
+            name: path.join('assets', 'fonts', '[path][name].[ext]')
+          }
         }]
       }
     ]
