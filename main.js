@@ -1,9 +1,21 @@
-const { app, BrowserWindow, shell, Tray, Menu } = require('electron')
+const setupEvents = require('./installers/setupEvents')
+if (setupEvents.handleSquirrelEvent()) {
+  return
+}
+
+const pkg = require('./package.json')
+
+const { app, BrowserWindow, shell, Tray, Menu, dialog } = require('electron')
 const log = require('electron-log')
 const i18next = require('i18next')
 const path = require('path')
 
-log.info(app.getLocale())
+log.transports.file.appName = pkg.name
+log.transports.file.level = 'info'
+log.transports.file.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'
+log.transports.file.maxSize = 5 * 1024 * 1024
+
+
 i18next.init({
   languages: ['en', 'cs'],
   fallbackLng: 'en',
@@ -12,14 +24,22 @@ i18next.init({
       translation: {
         'title': 'Malá Heureka',
         'quit_app': 'Ukončit',
-        'show_app': 'Zobrazit aplikaci'
+        'show_app': 'Zobrazit aplikaci',
+        'msq_quit_title': 'Potvrďte ukončení',
+        'msq_quit_question': 'Opravdu chcete ukončit Malá Heureka?',
+        'msq_quit_yes': 'Ukončení aplikace',
+        'msq_quit_cancel': 'Zrušit'
       }
     },
     en: {
       translation: {
         'title': 'Little Heureka',
         'quit_app': 'Quit',
-        'show_app': 'Show App'
+        'show_app': 'Show App',
+        'msq_quit_title': 'Confirm exit',
+        'msq_quit_question': 'Are you sure want to exit Little Heureka?',
+        'msq_quit_yes': 'Exit',
+        'msq_quit_cancel': 'Cancel'
       }
     }
   }
@@ -29,7 +49,8 @@ let win
 
 function createWindow () {
   // Create the browser window.
-
+  log.info('Create window')
+  log.info('Set local:', app.getLocale())
   i18next.changeLanguage(app.getLocale())
 
   // Create the browser window.
@@ -40,34 +61,36 @@ function createWindow () {
     minWidth: 300,
     icon: path.resolve(__dirname, 'dist', 'favicon.ico'),
     title: i18next.t('title')
+    // frame: false
   })
+
+  win.setMenu(null)
 
   // and load the index.html of the app.
   win.loadFile(path.resolve(__dirname, 'dist', 'index.html'))
 
   // Open the DevTools.
-  //win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   win.on('closed', () => {
     win = null
   })
 
-  win.on('minimize', function (event) {
+  win.on('minimize', (event) => {
     event.preventDefault()
     win.hide()
   })
 
-  win.webContents.on('new-window', function (e, url) {
+  win.webContents.on('new-window', (e, url) => {
     e.preventDefault()
     shell.openExternal(url)
   })
 
-  win.on('close', function (event) {
+  win.on('close', (event) => {
     if (!app.isQuiting) {
       event.preventDefault()
-      win.hide()
+      msgQuit(win)
     }
-
     return false
   })
 
@@ -79,6 +102,7 @@ app.on('ready', createWindow)
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    log.info('Quit app')
     app.quit()
   }
 })
@@ -90,6 +114,7 @@ app.on('activate', () => {
 })
 
 function createTray (win) {
+  log.info('Create tray')
   var tray = new Tray(path.resolve(__dirname, 'dist', 'favicon.ico'))
   tray.setToolTip(i18next.t('title'))
   tray.setTitle(i18next.t('title'))
@@ -108,6 +133,7 @@ function createTray (win) {
     {
       label: i18next.t('quit_app'),
       click: function () {
+        log.info('Quit app')
         app.isQuiting = true
         app.quit()
       }
@@ -116,67 +142,22 @@ function createTray (win) {
   tray.setContextMenu(contextMenu)
 }
 
-//
-// function handleSquirrelEvent(application) {
-//   if (process.argv.length === 1) {
-//     return false;
-//   }
-//
-//   const ChildProcess = require('child_process');
-//   const path = require('path');
-//
-//   const appFolder = path.resolve(process.execPath, '..');
-//   const rootAtomFolder = path.resolve(appFolder, '..');
-//   const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
-//   const exeName = path.basename(process.execPath);
-//
-//   const spawn = function(command, args) {
-//     let spawnedProcess, error;
-//
-//     try {
-//       spawnedProcess = ChildProcess.spawn(command, args, {
-//         detached: true
-//       });
-//     } catch (error) {}
-//
-//     return spawnedProcess;
-//   };
-//
-//   const spawnUpdate = function(args) {
-//     return spawn(updateDotExe, args);
-//   };
-//
-//   const squirrelEvent = process.argv[1];
-//   switch (squirrelEvent) {
-//     case '--squirrel-install':
-//     case '--squirrel-updated':
-//       // Optionally do things such as:
-//       // - Add your .exe to the PATH
-//       // - Write to the registry for things like file associations and
-//       //   explorer context menus
-//
-//       // Install desktop and start menu shortcuts
-//       spawnUpdate(['--createShortcut', exeName]);
-//
-//       setTimeout(application.quit, 1000);
-//       return true;
-//
-//     case '--squirrel-uninstall':
-//       // Undo anything you did in the --squirrel-install and
-//       // --squirrel-updated handlers
-//
-//       // Remove desktop and start menu shortcuts
-//       spawnUpdate(['--removeShortcut', exeName]);
-//
-//       setTimeout(application.quit, 1000);
-//       return true;
-//
-//     case '--squirrel-obsolete':
-//       // This is called on the outgoing version of your app before
-//       // we update to the new version - it's the opposite of
-//       // --squirrel-updated
-//
-//       application.quit();
-//       return true;
-//   }
-// };
+function msgQuit (window) {
+  const options = {
+    type: 'question',
+    buttons: [ i18next.t('msq_quit_yes'), i18next.t('msq_quit_cancel') ],
+    defaultId: 2,
+    title: i18next.t('msq_quit_title'),
+    message: i18next.t('msq_quit_question'),
+    detail: null,
+    checkboxChecked: false
+  }
+
+  dialog.showMessageBox(window, options, (response, checkboxChecked) => {
+    if (response === 0) {
+      log.info('Quit app')
+      app.isQuiting = true
+      app.quit()
+    }
+  })
+}

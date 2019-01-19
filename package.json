@@ -20,9 +20,9 @@
     "test:lighthouse:audit": "lighthouse http://localhost:3000 -G -A --view --quiet --output-path=./lighthouse-report/report.html",
     "test:lighthouse:security": "lighthouse-security http://localhost:3000 --security --view --quiet --output-path=./lighthouse-report/report.security.html",
     "electron": "electron .",
-    "build:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=./dist/favicon.ico --prune=true --out=bin",
-    "build:win": "electron-packager . --overwrite --platform=win32 --arch=x64 --icon=./dist/favicon.ico --prune=true --out=bin",
-    "build:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=./dist/favicon.ico --prune=true --out=bin",
+    "build:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=./dist/favicon.ico --prune=true --out=bin/mac",
+    "build:win": "electron-packager . --overwrite --platform=win32 --arch=x64 --icon=./dist/favicon.ico --prune=true --out=bin/win --ignore=\"(doc|src|test|.cache)\" & node installers/windowsInstaller.js",
+    "build:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=./dist/favicon.ico --prune=true --out=bin/linux",
     "build:all-platform": "npm run build:mac & npm run build:win & npm run build:linux"
   },
   "repository": {
@@ -42,7 +42,6 @@
     "css-loader": "^2.1.0",
     "cypress": "^3.1.4",
     "electron": "^4.0.1",
-    "electron-log": "^2.2.17",
     "electron-packager": "^13.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-winstaller": "^2.7.0",
@@ -83,6 +82,7 @@
     "angular-translate": "^2.18.1",
     "bootstrap": "^4.2.1",
     "config": "^3.0.1",
+    "electron-log": "^2.2.17",
     "i18next": "^13.1.4",
     "jquery": "^3.3.1",
     "string-format": "^2.0.0"

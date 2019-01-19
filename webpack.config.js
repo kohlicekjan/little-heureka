@@ -15,11 +15,11 @@ const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const isDev = process.argv.indexOf('development') > 0
-const distPath = path.resolve(__dirname, 'dist')
+const distPath = path.resolve('dist')
 
 const webpackConfig = {
   entry: {
-    app: path.resolve(__dirname, 'src', 'app', 'app.js')
+    app: path.resolve('src', 'app', 'app.js')
   },
   output: {
     path: distPath,
@@ -45,7 +45,7 @@ const webpackConfig = {
             options: { sourceMap: true }
           }
         ],
-        include: [path.resolve(__dirname, 'src', 'assets', 'styles')]
+        include: [path.resolve('src', 'assets', 'styles')]
       },
       {
         test: /\.(png|jpg|gif)$/i,
@@ -74,9 +74,9 @@ const webpackConfig = {
     new CleanWebpackPlugin(distPath),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(__dirname, 'src', 'index.template.html'),
+      template: path.resolve('src', 'index.template.html'),
       inject: 'head',
-      favicon: path.resolve(__dirname, 'src', 'assets', 'favicons', 'favicon.ico'),
+      favicon: path.resolve('src', 'assets', 'favicons', 'favicon.ico'),
       minify: {
         minifyCSS: true,
         minifyJS: true,
@@ -99,7 +99,7 @@ const webpackConfig = {
       theme_color: '#ffffff',
       icons: [
         {
-          src: path.resolve(__dirname, 'src', 'assets', 'favicons', 'favicon.png'),
+          src: path.resolve('src', 'assets', 'favicons', 'favicon.png'),
           sizes: [24, 32, 48, 72, 96, 144, 192, 512],
           destination: path.join('assets', 'favicons')
         }
